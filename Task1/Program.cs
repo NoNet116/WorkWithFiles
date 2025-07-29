@@ -66,49 +66,53 @@ namespace Task1
         {
             var now = DateTime.Now;
             bool isExist = false;
-            foreach (string file in Directory.GetFiles(folderPath, "*", SearchOption.AllDirectories))
+            try
             {
-                try
+                foreach (string file in Directory.GetFiles(folderPath, "*", SearchOption.AllDirectories))
                 {
+                
                     DateTime lastAccess = File.GetLastAccessTime(file);
                     if ((now - lastAccess) > maxUnusedTime)
                     {
                         Console.WriteLine($"Будет удалено: {file}");
                         isExist = true;
                     }
+               
                 }
-                catch (UnauthorizedAccessException)
-                {
-                    Console.WriteLine($"Нет доступа к файлу: {file}");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Ошибка при удалении файла {file}: {ex.Message}");
-                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Console.WriteLine($"Нет доступа к {folderPath}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при удалении : {ex.Message}");
             }
             return isExist;
         }
         static void DeleteOldFiles(string folderPath, TimeSpan maxUnusedTime, DateTime now)
         {
-            foreach (string file in Directory.GetFiles(folderPath, "*", SearchOption.AllDirectories))
+            try
             {
-                try
+                foreach (string file in Directory.GetFiles(folderPath, "*", SearchOption.AllDirectories))
                 {
+                
                     DateTime lastAccess = File.GetLastAccessTime(file);
                     if ((now - lastAccess) > maxUnusedTime)
                     {
                         File.Delete(file);
                         Console.WriteLine($"Удален файл: {file}");
                     }
+                
                 }
-                catch (UnauthorizedAccessException)
-                {
-                    Console.WriteLine($"Нет доступа к файлу: {file}");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Ошибка при удалении файла {file}: {ex.Message}");
-                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Console.WriteLine($"Нет доступа : {folderPath}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при удалении: {ex.Message}");
             }
         }
 
